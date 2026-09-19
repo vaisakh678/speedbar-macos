@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --muted: #5b6270;
+  --rule: #e6e8ec;
+  --card: #f7f8fa;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-card: var(--card);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0b0d11;
+    --foreground: #e8eaee;
+    --muted: #949cab;
+    --rule: #1e222a;
+    --card: #12151b;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  /* The scaffold hardcodes Arial here, which throws away the loaded Geist face. */
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}

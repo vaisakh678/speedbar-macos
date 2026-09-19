@@ -1,0 +1,57 @@
+name: Deploy docs
+
+# Production only. The docs site has a single Cloudflare Pages project, so
+# there is nothing for the development branch to deploy to.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - ".github/workflows/deploy-docs.yml"
+  workflow_dispatch:
+
+# A later commit should win rather than race an in-flight deploy.
+concurrency:
+  group: deploy-docs
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: main
+    permissions:
+      contents: read
+      deployments: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: docs/pnpm-lock.yaml
+
+      - name: Install
+        working-directory: docs
+        run: pnpm install --frozen-lockfile
+
+      # next.config.ts sets output: "export", so this writes a static tree to
+      # docs/out rather than a server build.
+      - name: Build
+        working-directory: docs
+        run: pnpm build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: >-
+            pages deploy docs/out
+            --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT_NAME }}
+            --branch=main
