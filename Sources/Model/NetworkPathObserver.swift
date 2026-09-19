@@ -46,7 +46,7 @@ final class NetworkPathObserver {
     private(set) var localAddress: String?
 
     private let monitor = NWPathMonitor()
-    private let queue = DispatchQueue(label: "com.cortexlumora.Speedbar.path")
+    private let queue = DispatchQueue(label: "com.cortexlumora.Wirespeed.path")
 
     init() {
         monitor.pathUpdateHandler = { [weak self] path in

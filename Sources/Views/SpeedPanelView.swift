@@ -13,7 +13,7 @@ struct SpeedPanelView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            MenuActionRow(title: "About Speedbar") {
+            MenuActionRow(title: "About Wirespeed") {
                 NSApp.activate(ignoringOtherApps: true)
                 NSApp.orderFrontStandardAboutPanel(nil)
             }
