@@ -37,6 +37,12 @@ final class AppSettings {
         didSet { defaults.set(refreshInterval, forKey: Key.refreshInterval) }
     }
 
+    /// True once a registration attempt has actually been refused. The login
+    /// item only fails on an unsigned build, but that is worth saying only to
+    /// someone who hit it — an App Store copy never will, and showing the
+    /// caveat unconditionally just worries people.
+    private(set) var loginItemRefused = false
+
     var launchAtLogin: Bool {
         didSet {
             guard launchAtLogin != oldValue else { return }
@@ -86,7 +92,9 @@ final class AppSettings {
             } else {
                 try SMAppService.mainApp.unregister()
             }
+            loginItemRefused = false
         } catch {
+            loginItemRefused = true
             // Registration fails for unsigned/ad-hoc builds. Roll the toggle
             // back so the UI keeps reflecting reality.
             launchAtLogin = SMAppService.mainApp.status == .enabled

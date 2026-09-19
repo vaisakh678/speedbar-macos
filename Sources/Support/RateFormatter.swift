@@ -36,12 +36,16 @@ enum RateFormatter {
     /// contested space — on a notched display a full `12.4 MB/s` per row is
     /// wide enough that macOS banishes the whole item to the overflow menu.
     static func compactComponents(bytesPerSecond: Double, as unit: RateUnit) -> (value: String, unit: String) {
-        switch unit {
-        case .bytes:
-            return scale(bytesPerSecond, divisor: 1024, suffixes: ["", "K", "M", "G", "T"])
-        case .bits:
-            return scale(bytesPerSecond * 8, divisor: 1000, suffixes: ["", "K", "M", "G", "T"])
+        let parts = switch unit {
+        case .bytes: scale(bytesPerSecond, divisor: 1024, suffixes: ["", "K", "M", "G", "T"])
+        case .bits: scale(bytesPerSecond * 8, divisor: 1000, suffixes: ["", "K", "M", "G", "T"])
         }
+
+        // Below one kilo the scale lands on the empty suffix, which renders as
+        // a bare number — "500" beside an arrow reads as 500 K at a glance.
+        // Report those as 0K instead: at menu bar granularity, sub-kilobyte
+        // chatter is indistinguishable from idle anyway.
+        return parts.unit.isEmpty ? ("0", "K") : parts
     }
 
     static func string(bytesPerSecond: Double, as unit: RateUnit) -> String {
