@@ -60,7 +60,9 @@ final class AppSettings {
         static let refreshInterval = "refreshInterval"
     }
 
-    init(defaults: UserDefaults = .standard) {
+    /// `readsLoginItem: false` skips the SMAppService query, which requires a
+    /// real app bundle — the screenshot tool runs as a plain executable.
+    init(defaults: UserDefaults = .standard, readsLoginItem: Bool = true) {
         self.defaults = defaults
 
         self.rateUnit = defaults.string(forKey: Key.rateUnit)
@@ -74,7 +76,7 @@ final class AppSettings {
 
         // The login-item state lives in the system, not in our defaults, so
         // read it back from SMAppService rather than trusting a cached copy.
-        self.launchAtLogin = SMAppService.mainApp.status == .enabled
+        self.launchAtLogin = readsLoginItem && SMAppService.mainApp.status == .enabled
     }
 
     private func applyLaunchAtLogin() {

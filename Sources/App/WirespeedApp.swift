@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct SpeedbarApp: App {
+struct WirespeedApp: App {
 
     @State private var settings: AppSettings
     @State private var monitor: SpeedMonitor
@@ -11,7 +11,7 @@ struct SpeedbarApp: App {
     init() {
         let settings = AppSettings()
         _settings = State(initialValue: settings)
-        let monitor = SpeedMonitor(settings: settings)
+        let monitor = SpeedMonitor(settings: settings, path: NetworkPathObserver())
         _monitor = State(initialValue: monitor)
 
         // Sampling has to begin at launch, not when the panel is first opened —
@@ -37,7 +37,8 @@ struct SpeedbarApp: App {
                 upload: monitor.upload,
                 dominant: monitor.dominantDirection,
                 unit: settings.rateUnit,
-                layout: settings.menuBarLayout
+                layout: settings.menuBarLayout,
+                isOffline: monitor.pathObserver.hasEvaluatedPath && !monitor.pathObserver.isOnline
             ) {
                 Image(nsImage: image)
             } else {

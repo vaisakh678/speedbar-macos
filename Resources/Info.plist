@@ -18,6 +18,15 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<!-- Required for Mac App Store submission; must match the primary
+	     category set in App Store Connect (Utilities). -->
+	<!-- The app's only cryptography is standard HTTPS via URLSession, which is
+	     exempt from export compliance. Declaring it here stops App Store
+	     Connect asking on every upload. -->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<!-- Agent app: menu bar only, no Dock icon, no main menu. -->

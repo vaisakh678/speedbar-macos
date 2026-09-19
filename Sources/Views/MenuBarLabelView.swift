@@ -9,9 +9,17 @@ struct MenuBarLabelView: View {
     let dominant: SpeedMonitor.Direction
     let unit: RateUnit
     let layout: AppSettings.MenuBarLayout
+    /// Black is correct for the menu bar, where the render becomes a template
+    /// image and only its alpha survives. The screenshot tool overrides it.
+    var tint: Color = .black
+    /// Drawn instead of a rate when there is no route to the internet — a
+    /// reading of 0 B/s is indistinguishable from an idle connection.
+    var isOffline: Bool = false
 
     /// A fixed width stops neighbouring menu bar items sliding sideways every
     /// time a digit is gained or lost.
+    static let offlineWidth: CGFloat = 26
+
     static func width(for layout: AppSettings.MenuBarLayout) -> CGFloat {
         switch layout {
         case .dominant: 58
@@ -23,6 +31,22 @@ struct MenuBarLabelView: View {
     private static let barHeight: CGFloat = 22
 
     var body: some View {
+        Group {
+            if isOffline {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.system(size: 12, weight: .semibold))
+            } else {
+                content
+            }
+        }
+        .frame(width: isOffline ? Self.offlineWidth : Self.width(for: layout),
+               height: Self.barHeight)
+        .foregroundStyle(tint)
+        .help(isOffline ? "No internet connection" : "")
+    }
+
+    @ViewBuilder
+    private var content: some View {
         Group {
             switch layout {
             case .dominant:
@@ -42,10 +66,6 @@ struct MenuBarLabelView: View {
                 }
             }
         }
-        .frame(width: Self.width(for: layout), height: Self.barHeight)
-        // Black-on-transparent: the render is used as an AppKit template image,
-        // so only alpha survives and the system recolours it for the menu bar.
-        .foregroundStyle(.black)
     }
 
     private func singleRow(symbol: String, value: Double) -> some View {
@@ -86,7 +106,8 @@ enum MenuBarLabelRenderer {
         upload: Double,
         dominant: SpeedMonitor.Direction,
         unit: RateUnit,
-        layout: AppSettings.MenuBarLayout
+        layout: AppSettings.MenuBarLayout,
+        isOffline: Bool
     ) -> NSImage? {
         let renderer = ImageRenderer(
             content: MenuBarLabelView(
@@ -94,7 +115,8 @@ enum MenuBarLabelRenderer {
                 upload: upload,
                 dominant: dominant,
                 unit: unit,
-                layout: layout
+                layout: layout,
+                isOffline: isOffline
             )
         )
         renderer.scale = NSScreen.main?.backingScaleFactor ?? 2

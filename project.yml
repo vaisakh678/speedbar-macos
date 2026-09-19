@@ -1,4 +1,4 @@
-name: Speedbar
+name: Wirespeed
 
 options:
   bundleIdPrefix: com.cortexlumora
@@ -17,7 +17,7 @@ settings:
     DEAD_CODE_STRIPPING: YES
 
 targets:
-  Speedbar:
+  Wirespeed:
     type: application
     platform: macOS
     sources:
@@ -25,14 +25,23 @@ targets:
       - path: Resources/Assets.xcassets
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.cortexlumora.Speedbar
-        PRODUCT_NAME: Speedbar
+        PRODUCT_BUNDLE_IDENTIFIER: com.cortexlumora.Wirespeed
+        PRODUCT_NAME: Wirespeed
         INFOPLIST_FILE: Resources/Info.plist
-        CODE_SIGN_ENTITLEMENTS: Resources/Speedbar.entitlements
+        CODE_SIGN_ENTITLEMENTS: Resources/Wirespeed.entitlements
         ENABLE_HARDENED_RUNTIME: YES
         COMBINE_HIDPI_IMAGES: YES
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-        # Ad-hoc signing so the app builds and runs locally with no Apple account.
-        # For distribution, swap to: CODE_SIGN_STYLE: Automatic + DEVELOPMENT_TEAM: KTJUU8D53Q
-        CODE_SIGN_STYLE: Manual
-        CODE_SIGN_IDENTITY: "-"
+      configs:
+        # Ad-hoc signing keeps day-to-day builds working with no certificate
+        # installed. Nothing here can be distributed, which is the point.
+        Debug:
+          CODE_SIGN_STYLE: Manual
+          CODE_SIGN_IDENTITY: "-"
+        # Release lets Xcode manage the certificate and provisioning profile.
+        # Hand-picking a profile means first creating a CSR, then a Mac App
+        # Distribution certificate, then a profile bound to both — all of which
+        # Xcode does itself when signing is automatic.
+        Release:
+          CODE_SIGN_STYLE: Automatic
+          DEVELOPMENT_TEAM: KTJUU8D53Q
