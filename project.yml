@@ -22,6 +22,7 @@ targets:
     platform: macOS
     sources:
       - path: Sources
+      - path: Resources/Assets.xcassets
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.cortexlumora.Speedbar
@@ -30,6 +31,7 @@ targets:
         CODE_SIGN_ENTITLEMENTS: Resources/Speedbar.entitlements
         ENABLE_HARDENED_RUNTIME: YES
         COMBINE_HIDPI_IMAGES: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         # Ad-hoc signing so the app builds and runs locally with no Apple account.
         # For distribution, swap to: CODE_SIGN_STYLE: Automatic + DEVELOPMENT_TEAM: KTJUU8D53Q
         CODE_SIGN_STYLE: Manual

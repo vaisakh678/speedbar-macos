@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 /// Preferences laid out like Hot's: a plain left-aligned column of checkboxes
@@ -69,27 +70,29 @@ struct SettingsView: View {
         .fixedSize(horizontal: false, vertical: true)
     }
 
-    /// Stands in for an app icon asset, which the project does not ship yet.
+    /// The real app icon, which already carries its own squircle and the
+    /// transparent margin Apple's grid reserves for a shadow — so it is drawn
+    /// as-is, with only the shadow that margin exists for.
     private var appMark: some View {
-        RoundedRectangle(cornerRadius: 42, style: .continuous)
-            .fill(
-                LinearGradient(
-                    colors: [Color(red: 0.42, green: 0.70, blue: 1.0), Color(red: 0.16, green: 0.38, blue: 0.86)],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
-            .frame(width: 186, height: 186)
-            .overlay(
-                Image(systemName: "speedometer")
-                    .font(.system(size: 104, weight: .light))
-                    .foregroundStyle(.white)
-            )
-            .overlay(
+        Group {
+            if let icon = NSImage(named: NSImage.applicationIconName) {
+                Image(nsImage: icon)
+                    .resizable()
+                    .interpolation(.high)
+                    .aspectRatio(contentMode: .fit)
+            } else {
+                // Only reachable if the asset catalog failed to build.
                 RoundedRectangle(cornerRadius: 42, style: .continuous)
-                    .strokeBorder(.white.opacity(0.28), lineWidth: 1)
-            )
-            .shadow(color: .black.opacity(0.22), radius: 12, y: 5)
+                    .fill(.quaternary)
+                    .overlay(
+                        Image(systemName: "speedometer")
+                            .font(.system(size: 88, weight: .light))
+                            .foregroundStyle(.secondary)
+                    )
+            }
+        }
+        .frame(width: 186, height: 186)
+        .shadow(color: .black.opacity(0.28), radius: 10, y: 4)
     }
 
     private var bitsBinding: Binding<Bool> {
