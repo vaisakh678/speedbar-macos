@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct SpeedbarApp: App {
+struct WirespeedApp: App {
 
     @State private var settings: AppSettings
     @State private var monitor: SpeedMonitor

@@ -1,4 +1,4 @@
-# Speedbar
+# Wirespeed
 
 Live network speed monitor for the macOS menu bar — a native SwiftUI app that
 shows throughput at a glance, copies your IP, and runs an on-demand speed test.
@@ -12,14 +12,14 @@ shows throughput at a glance, copies your IP, and runs an on-demand speed test.
 ## Building
 
 ```sh
-xcodegen generate          # regenerates Speedbar.xcodeproj from project.yml
-open Speedbar.xcodeproj
+xcodegen generate          # regenerates Wirespeed.xcodeproj from project.yml
+open Wirespeed.xcodeproj
 ```
 
 Or from the command line:
 
 ```sh
-xcodebuild -project Speedbar.xcodeproj -scheme Speedbar -configuration Debug build
+xcodebuild -project Wirespeed.xcodeproj -scheme Wirespeed -configuration Debug build
 ```
 
 `.xcodeproj` is gitignored — `project.yml` is the source of truth, so edit that
@@ -78,9 +78,9 @@ answer "roughly how fast is this link right now".
 project.yml                    XcodeGen manifest — the project's source of truth
 Resources/
   Info.plist                   LSUIElement = true (menu bar only, no Dock icon)
-  Speedbar.entitlements        App Sandbox + network client
+  Wirespeed.entitlements       App Sandbox + network client
 Sources/
-  App/SpeedbarApp.swift        @main, MenuBarExtra + Settings scenes
+  App/WirespeedApp.swift       @main, MenuBarExtra + Settings scenes
   Model/
     InterfaceCounters.swift    sysctl NET_RT_IFLIST2 reader
     NetworkPathObserver.swift  NWPathMonitor wrapper — which link is active
