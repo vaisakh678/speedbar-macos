@@ -49,7 +49,7 @@ export default function Support() {
 
       <Section heading="The speed test disagrees with Ookla or fast.com">
         <p>
-          It will, and by design. Wirespeed's test is a single stream against
+          It will, and by design. Wirespeed&apos;s test is a single stream against
           Cloudflare with no server selection and no multi-connection ramp-up.
           It is meant to answer roughly how fast this link is right now, not to
           replace a dedicated speed testing service. Expect it to read lower
@@ -60,7 +60,7 @@ export default function Support() {
       <Section heading="Numbers look wrong while a VPN is connected">
         <p>
           Wirespeed follows the interface your Mac is routing through, so with a
-          VPN up it measures the tunnel. Those figures include the VPN's own
+          VPN up it measures the tunnel. Those figures include the VPN&apos;s own
           encapsulation overhead, so they read slightly higher than the payload
           you are actually moving. The panel names the connection it is
           measuring, so you can always tell which one you are looking at.
