@@ -2,6 +2,11 @@ name: Wirespeed
 
 options:
   bundleIdPrefix: com.cortexlumora
+  # Stamps LastUpgradeCheck. Without it XcodeGen emits an old value and Xcode
+  # offers "Update to recommended settings" on every open — an offer that is
+  # pointless here, since accepting it edits the generated .xcodeproj and the
+  # next `xcodegen generate` throws the change away.
+  xcodeVersion: "27.0"
   deploymentTarget:
     macOS: "14.0"
   createIntermediateGroups: true
