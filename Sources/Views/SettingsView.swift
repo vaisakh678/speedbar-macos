@@ -48,9 +48,11 @@ struct SettingsView: View {
                 .padding(.vertical, 4)
 
             Toggle("Start at login", isOn: $settings.launchAtLogin)
-            Text("Requires a signed build — an ad-hoc development build cannot register a login item.")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            if settings.loginItemRefused {
+                Text("macOS refused to register the login item. This happens on ad-hoc development builds, which cannot register one.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
 
             Divider()
                 .padding(.vertical, 4)
