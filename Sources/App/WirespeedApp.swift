@@ -11,7 +11,7 @@ struct WirespeedApp: App {
     init() {
         let settings = AppSettings()
         _settings = State(initialValue: settings)
-        let monitor = SpeedMonitor(settings: settings)
+        let monitor = SpeedMonitor(settings: settings, path: NetworkPathObserver())
         _monitor = State(initialValue: monitor)
 
         // Sampling has to begin at launch, not when the panel is first opened —
@@ -37,7 +37,8 @@ struct WirespeedApp: App {
                 upload: monitor.upload,
                 dominant: monitor.dominantDirection,
                 unit: settings.rateUnit,
-                layout: settings.menuBarLayout
+                layout: settings.menuBarLayout,
+                isOffline: monitor.pathObserver.hasEvaluatedPath && !monitor.pathObserver.isOnline
             ) {
                 Image(nsImage: image)
             } else {
