@@ -110,6 +110,26 @@ Set in Preferences:
 - **Both, stacked** — two small rows, upload over download.
 - **Download only** — a single line, always the download rate.
 
+## Icon
+
+`Design/icon-source.png` is the square artwork. The asset catalog is generated
+from it:
+
+```sh
+swift Tools/make-appicon.swift Design/icon-source.png Resources/Assets.xcassets
+```
+
+Apple's grid places the artwork in an 824x824 rounded square centred on a
+1024x1024 canvas, with the surrounding margin left transparent so the system
+can draw its own shadow. The corner is a *continuous* curve rather than a
+circular arc, which is why the generator renders through SwiftUI's
+`RoundedRectangle(style: .continuous)` instead of compositing with `sips` — a
+plain rounded rect reads as subtly wrong beside other Dock icons.
+
+Because the app is an agent (`LSUIElement`), the icon never appears in the
+Dock. It shows in Finder, Spotlight, the About panel, and System Settings ›
+Login Items.
+
 ## Signing
 
 The project ad-hoc signs (`CODE_SIGN_IDENTITY: "-"`) so it builds and runs
