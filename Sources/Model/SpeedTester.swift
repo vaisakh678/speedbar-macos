@@ -52,6 +52,14 @@ final class SpeedTester {
         self.session = URLSession(configuration: configuration)
     }
 
+    /// A tester parked in a fixed state, for previews and screenshots.
+    static func preview(phase: Phase, result: Result? = nil) -> SpeedTester {
+        let tester = SpeedTester()
+        tester.phase = phase
+        tester.result = result
+        return tester
+    }
+
     func run() {
         guard !isRunning else { return }
         task?.cancel()

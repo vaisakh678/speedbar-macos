@@ -37,9 +37,32 @@ final class SpeedMonitor {
     private var lastSampledAt: Date?
     private var task: Task<Void, Never>?
 
-    init(settings: AppSettings, path: NetworkPathObserver = NetworkPathObserver()) {
+    init(settings: AppSettings, path: NetworkPathObserver) {
         self.settings = settings
         self.path = path
+    }
+
+    /// A monitor holding fixed readings and not sampling, for SwiftUI previews
+    /// and the generated App Store screenshots.
+    static func preview(
+        settings: AppSettings,
+        path: NetworkPathObserver,
+        download: Double,
+        upload: Double,
+        history: [SpeedSample],
+        sessionIn: UInt64,
+        sessionOut: UInt64,
+        dominant: Direction
+    ) -> SpeedMonitor {
+        let monitor = SpeedMonitor(settings: settings, path: path)
+        monitor.download = download
+        monitor.upload = upload
+        monitor.history = history
+        monitor.sessionBytesIn = sessionIn
+        monitor.sessionBytesOut = sessionOut
+        monitor.peakDownload = history.map(\.download).max() ?? download
+        monitor.dominantDirection = dominant
+        return monitor
     }
 
     func start() {

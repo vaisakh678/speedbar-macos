@@ -15,3 +15,6 @@ xcuserdata/
 # Swift Package Manager
 .build/
 .swiftpm/
+
+# Generated App Store screenshots (rebuild: swift Tools/make-screenshots.swift)
+Design/screenshots/

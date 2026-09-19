@@ -23,6 +23,13 @@ final class PublicAddressLookup {
     private static let url = URL(string: "https://speed.cloudflare.com/__down?bytes=0")!
     private var task: Task<Void, Never>?
 
+    /// A lookup parked in a fixed state, for previews and screenshots.
+    static func preview(state: State) -> PublicAddressLookup {
+        let lookup = PublicAddressLookup()
+        lookup.state = state
+        return lookup
+    }
+
     /// Discards a cached result, so the next lookup reflects a new network.
     func invalidate() {
         task?.cancel()
