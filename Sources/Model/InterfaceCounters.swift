@@ -89,6 +89,6 @@ enum InterfaceCountersReader {
     private static func interfaceName(forIndex index: UInt32) -> String? {
         var storage = [CChar](repeating: 0, count: Int(IFNAMSIZ) + 1)
         guard if_indextoname(index, &storage) != nil else { return nil }
-        return String(cString: storage)
+        return String(cBuffer: storage)
     }
 }

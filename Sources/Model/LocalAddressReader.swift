@@ -40,7 +40,7 @@ enum LocalAddressReader {
             )
             guard result == 0 else { continue }
 
-            var text = String(cString: host)
+            var text = String(cBuffer: host)
 
             if family == UInt8(AF_INET) {
                 if ipv4 == nil { ipv4 = text }
