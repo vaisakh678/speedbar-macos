@@ -1,6 +1,9 @@
 // Renders the App Store screenshots from the app's own SwiftUI views.
 //
-//   swift Tools/make-screenshots.swift Design/screenshots
+//   Tools/make-screenshots.sh [output-dir]
+//
+// Run it through that wrapper, not as a standalone `swift` script: this file
+// renders the app's own views, so it must be compiled alongside Sources/.
 //
 // The views are rendered offscreen with ImageRenderer rather than captured
 // from a running app: a menu bar panel cannot be screenshotted without also

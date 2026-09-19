@@ -119,6 +119,14 @@ from it:
 swift Tools/make-appicon.swift Design/icon-source.png Resources/Assets.xcassets
 ```
 
+The App Store screenshots are generated the same way, from the app's real
+SwiftUI views rather than captured from a running app — a menu bar panel
+cannot be screenshotted without also capturing whatever is behind it:
+
+```sh
+Tools/make-screenshots.sh            # writes Design/screenshots
+```
+
 Apple's grid places the artwork in an 824x824 rounded square centred on a
 1024x1024 canvas, with the surrounding margin left transparent so the system
 can draw its own shadow. The corner is a *continuous* curve rather than a
